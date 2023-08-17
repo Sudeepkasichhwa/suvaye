@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:suvaye/widgets/custom_bottom_navbar.dart';
 import 'package:suvaye/widgets/outline_card.dart';
 
-import '../widgets/indicator.dart';
 
 class ServiceScreen extends StatefulWidget {
   const ServiceScreen({super.key});
@@ -12,7 +12,7 @@ class ServiceScreen extends StatefulWidget {
 }
 
 class _ServiceScreenState extends State<ServiceScreen> {
-  var _selectedIndex = 0;
+  var _slideIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          physics: const ScrollPhysics(),
           controller: ScrollController(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -144,17 +143,35 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     scrollDirection: Axis.horizontal,
                     reverse: true,
                     physics: const BouncingScrollPhysics(),
-                    onPageChanged: (value) {},
+                    onPageChanged: (value) {
+                      setState(() {
+                        _slideIndex = value;
+                      });
+                    },
                   ),
                 ),
                 const SizedBox(height: 8.0),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Indicator(
-                      isActive: true,
-                    ),
-                  ],
+                SizedBox(
+                  height: 30.0,
+                  width: 250,
+                  
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 3,
+                      reverse: true,
+                      itemBuilder: ((context, index) {
+                        return Padding(
+                          padding:  const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 20.0,
+                            width: 20.0,
+                            decoration:  BoxDecoration(
+                              color: index == _slideIndex? const Color(0xFF027A48):Colors.grey,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        );
+                      })),
                 ),
                 const SizedBox(height: 20.0),
                 Row(
